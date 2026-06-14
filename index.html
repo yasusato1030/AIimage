@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロフィール | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #8B6FE8;
+    --accent-light: #EDE9FB;
+    --text-main: #1a1a2e;
+    --text-muted: #6b7280;
+    --bg: #fafaf8;
+    --card-bg: #ffffff;
+    --border: #e5e7eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text-main); line-height: 1.8; }
+
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white; padding: 80px 40px 60px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(139,111,232,0.15) 0%, transparent 60%); pointer-events: none;
+  }
+  .hero-avatar {
+    width: 96px; height: 96px; border-radius: 50%;
+    background: linear-gradient(135deg, #8B6FE8, #5B4FCF);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; font-weight: 600; color: white; margin: 0 auto 24px;
+    font-family: 'Noto Serif JP', serif; border: 3px solid rgba(255,255,255,0.2);
+    letter-spacing: 0.05em;
+  }
+  .hero h1 { font-family: 'Noto Serif JP', serif; font-size: 2.2rem; font-weight: 600; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .hero-sub { font-size: 0.85rem; color: rgba(255,255,255,0.5); letter-spacing: 0.18em; margin-bottom: 24px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .tag { background: rgba(139,111,232,0.25); border: 1px solid rgba(139,111,232,0.5); color: rgba(255,255,255,0.9); padding: 5px 16px; border-radius: 20px; font-size: 0.78rem; letter-spacing: 0.08em; }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 60px 24px; }
+  .section { margin-bottom: 52px; }
+  .section-title {
+    font-family: 'Noto Serif JP', serif; font-size: 1.15rem; font-weight: 600;
+    color: var(--text-main); margin-bottom: 20px; padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent); display: flex; align-items: center; gap: 10px;
+  }
+  .section-title .num { font-size: 0.72rem; color: var(--accent); letter-spacing: 0.12em; font-family: 'Noto Sans JP', sans-serif; font-weight: 300; }
+
+  /* About */
+  .about-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; font-size: 0.92rem; color: #374151; line-height: 2; }
+  .about-card p + p { margin-top: 10px; }
+
+  /* Qualifications */
+  .qual-list { display: flex; flex-wrap: wrap; gap: 10px; }
+  .qual-badge { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 0.82rem; color: var(--text-main); }
+
+  /* Skills */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+  .skill-group { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .skill-group-title { font-size: 0.72rem; color: var(--accent); font-weight: 500; letter-spacing: 0.12em; margin-bottom: 10px; border-bottom: 1px solid #f0ecfd; padding-bottom: 6px; }
+  .skill-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; padding: 3px 0; color: var(--text-main); }
+  .skill-level { font-size: 0.7rem; font-weight: 500; padding: 1px 8px; border-radius: 10px; }
+  .level-a { background: #fef3c7; color: #92400e; }
+  .level-b { background: #dbeafe; color: #1e40af; }
+  .level-c { background: #d1fae5; color: #065f46; }
+  .level-d { background: #f3f4f6; color: #6b7280; }
+
+  /* Career timeline — 会社名なし */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: linear-gradient(to bottom, var(--accent), #B49AF0); border-radius: 2px; }
+  .timeline-item { position: relative; margin-bottom: 28px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-dot { position: absolute; left: -24px; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid white; box-shadow: 0 0 0 2px var(--accent); }
+  .timeline-date { font-size: 0.78rem; color: var(--accent); font-weight: 500; letter-spacing: 0.08em; margin-bottom: 3px; }
+  .timeline-role { font-weight: 500; font-size: 0.95rem; color: var(--text-main); margin-bottom: 3px; }
+  .timeline-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; }
+  .timeline-current .timeline-dot { background: #10b981; box-shadow: 0 0 0 2px #10b981; }
+  .timeline-current .timeline-date { color: #10b981; }
+  .current-badge { display: inline-block; background: #d1fae5; color: #065f46; font-size: 0.7rem; padding: 2px 10px; border-radius: 10px; margin-left: 8px; vertical-align: middle; font-weight: 500; }
+
+  /* GitHub */
+  .github-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 22px 26px; display: flex; gap: 18px; align-items: flex-start; }
+  .github-icon { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
+  .github-card-title { font-weight: 500; font-size: 0.95rem; margin-bottom: 6px; }
+  .github-card-title a { color: var(--accent); text-decoration: none; }
+  .github-card-title a:hover { text-decoration: underline; }
+  .github-card-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 10px; }
+  .github-card-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tech-tag { background: var(--accent-light); color: var(--accent); font-size: 0.73rem; padding: 3px 11px; border-radius: 10px; font-weight: 500; }
+
+  /* Portfolio */
+  .portfolio-subtitle { font-size: 0.8rem; color: var(--accent); font-weight: 500; letter-spacing: 0.08em; margin: 20px 0 12px; }
+  .portfolio-subtitle:first-child { margin-top: 0; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .portfolio-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .portfolio-thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+  .portfolio-info { padding: 12px 14px; }
+  .portfolio-title { font-weight: 500; font-size: 0.88rem; margin-bottom: 3px; }
+  .portfolio-meta { font-size: 0.73rem; color: var(--text-muted); }
+
+  /* Contact */
+  .contact-card { background: linear-gradient(135deg, #1a1a2e, #0f3460); border-radius: 12px; padding: 32px 28px; text-align: center; color: white; }
+  .contact-card p { color: rgba(255,255,255,0.65); font-size: 0.88rem; margin-bottom: 18px; }
+  .contact-email { display: inline-block; background: rgba(139,111,232,0.3); border: 1px solid rgba(139,111,232,0.6); color: #c4b5fd; padding: 9px 26px; border-radius: 6px; font-size: 0.88rem; text-decoration: none; }
+
+  footer { text-align: center; padding: 24px; font-size: 0.76rem; color: var(--text-muted); border-top: 1px solid var(--border); }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.8rem; }
+    .container { padding: 36px 16px; }
+    .github-card { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-avatar">Y</div>
+  <h1>プロフィール</h1>
+  <p class="hero-sub">ITエンジニア &amp; AI IMAGE GENERATION CREATOR</p>
+  <div class="hero-tags">
+    <span class="tag">IT経験 約15年</span>
+    <span class="tag">AWS / Azure</span>
+    <span class="tag">インフラ・開発・保守</span>
+    <span class="tag">Stable Diffusion</span>
+    <span class="tag">AI漫画制作</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 自己紹介 -->
+  <section class="section">
+    <h2 class="section-title"><span class="num">01</span>自己紹介</h2>
+    <div class="about-card">
+      <p>はじめまして、Yasushiと申します。<br>IT業界でのキャリアは約15年で、インフラ運用・システム開発・DX推進と幅広い領域で経験を積んできました。現在はAWS基盤運用チームのリーダーを務めています。</p>
+      <p>また、Stable Diffusionを活用したAI画像生成・漫画制作にも取り組んでいます。<br>プロンプト設計やLoRAモデルの活用を通じて、コンスタントに高品質な画像を生成することが可能です。</p>
+    </div>
+  </section>
+
+  <!-- 資格 -->
+  <section class="section">
+    <h2 class="section-title"><span class="num">02</span>保有資格</h2>
+    <div class="qual-list">
+      <div class="qual-badge">MOS（Excel・Access）</div>
+      <div class="qual-badge">VBAエキスパート</div>
+      <div class="qual-badge">ITパスポート</div>
+      <div class="qual-badge">基本情報技術者</div>
+      <div class="qual-badge">Azure AZ-900</div>
+      <div class="qual-badge">Azure AI-900</div>
+      <div class="qual-badge">Azure DP-900</div>
+      <div class="qual-badge">AWS CLF</div>
+      <div class="qual-badge">HULFT</div>
+      <div class="qual-badge">DataSpider</div>
+    </div>
+  </section>
+
+  <!-- スキル -->
+  <section class="section">
+    <h2 class="section-title"><span class="num">03</span>技術スキル</h2>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:14px;">A：一人で対応可　B：サポートがあれば対応可　C：業務経験あり　D：学習経験あり</p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Language</div>
+        <div class="skill-item">ExcelVBA <span class="skill-level level-a">A</span></div>
+        <div class="skill-item">PL/SQL <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Java <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">JSP <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">C# / HTML / JS <span class="skill-level level-c">C</span></div>
+        <div class="skill-item">PowerShell / PHP <span class="skill-level level-c">C</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">OS / Cloud</div>
+        <div class="skill-item">AWS <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Azure <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Windows <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">RedHat / CentOS <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">SUSE <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Mac <span class="skill-level level-c">C</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">DB / Server</div>
+        <div class="skill-item">Oracle <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">SQLServer <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">HiRDB / DB2 <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Exchange Server <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">PostgreSQL <span class="skill-level level-c">C</span></div>
+        <div class="skill-item">MySQL <span class="skill-level level-d">D</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">ツール・その他</div>
+        <div class="skill-item">Docker <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Eclipse / VS Code <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">JP1 / ActiveDirectory <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">IntelliJ <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Stable Diffusion <span class="skill-level level-b">B</span></div>
+        <div class="skill-item">Android Studio <span class="skill-level level-c">C</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 経歴 -->
+  <section class="section">
+    <h2 class="section-title"><span class="num">04</span>経歴</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2008年〜2011年</div>
+        <div class="timeline-role">データセンター オペレーション</div>
+        <div class="timeline-desc">通信系データセンターにて監視・運用・一次保守対応・作業手順書作成などを担当。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2011年〜2012年</div>
+        <div class="timeline-role">無線通信システム テスト</div>
+        <div class="timeline-desc">無線基地局のIP設定・稼働確認・接続確認などの試験業務を担当。全国出張対応も経験。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2012年〜2019年</div>
+        <div class="timeline-role">システム運用・開発・プロジェクトリーダー</div>
+        <div class="timeline-desc">メールシステム移行設計・基幹業務システム運用・Webアプリ開発など複数案件を担当。プロジェクトリーダー・チームリーダーとして進捗管理・顧客調整を経験。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2019年〜2022年</div>
+        <div class="timeline-role">アプリ保守・システム開発</div>
+        <div class="timeline-desc">業務系Webアプリの保守・機能追加・単体テスト・結合テストを担当。Androidアプリ開発も経験。</div>
+      </div>
+      <div class="timeline-item timeline-current">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">2022年〜現在<span class="current-badge">現職</span></div>
+        <div class="timeline-role">AWS運用チームリーダー / DX推進</div>
+        <div class="timeline-desc">要件定義・設計・開発・テスト・運用保守の全フェーズに対応。現在はAWS運用保守チームのリーダーとして顧客調整・進捗管理を担当。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GitHub -->
+  <section class="section">
+    <h2 class="section-title"><span class="num">05</span>GitHubプロジェクト</h2>
+    <div class="github-card">
+      <div class="github-icon">🎯</div>
+      <div>
+        <div class="github-card-title">
+          <a href="https://github.com/yasusato1030/BingoGame" target="_blank" rel="noopener">BingoGame</a>
+        </div>
+        <div class="github-card-desc">Android Studioで作成したビンゴゲームアプリ。任意の数字範囲を設定しランダムに数字を抽出する。スマートフォンのエミュレータ上で動作確認済み。</div>
+        <div class="github-card-tags">
+          <span class="tech-tag">Android</span>
+          <span class="tech-tag">Java</span>
+          <span class="tech-tag">Android Studio</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI画像 -->
+  <section class="section">
+    <h2 class="section-title"><span class="num">06</span>AI画像生成サンプル</h2>
+
+    <div class="portfolio-subtitle">リアル系</div>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aibizyo_sample01.png" alt="リアル系サンプル01">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 01</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aibizyo_sample02.png" alt="リアル系サンプル02">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 02</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aibizyo_sample03.png" alt="リアル系サンプル03">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 03</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aibizyo_sample04.png" alt="リアル系サンプル04">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 04</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-subtitle">アニメ系</div>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aianimebizyo_sample01.png" alt="アニメ系サンプル01">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 05</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aianimebizyo_sample02.png" alt="アニメ系サンプル02">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 06</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aianimebizyo_sample03.png" alt="アニメ系サンプル03">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 07</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img class="portfolio-thumb" src="aianimebizyo_sample04.png" alt="アニメ系サンプル04">
+        <div class="portfolio-info">
+          <div class="portfolio-title">サンプル 08</div>
+          <div class="portfolio-meta">Stable Diffusion · 512×784</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section">
+    <h2 class="section-title"><span class="num">07</span>お問い合わせ</h2>
+    <div class="contact-card">
+      <p>お仕事のご依頼・ご相談はメールにてお気軽にご連絡ください。</p>
+      <a class="contact-email" href="mailto:xyz.20131984@gmail.com">xyz.20131984@gmail.com</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  &copy; 2026 Yasushi — IT Engineer &amp; AI Image Generation Creator
+</footer>
+
+</body>
+</html>
